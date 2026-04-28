@@ -1,31 +1,31 @@
-'''
-leiareg:
-Esse programa lê os dados gravados no arquivo criado pelo programa
-escreve_registros. Os registros devem ser lidos do arquivo um a um e apresentados em tela.
-'''
+nomearq = input("digite o nome do arquivo: ")
+entrada = open(nomearq, "rb")
 
-
-import os
-
-entrada = open("lereg.txt","rb")
 
 def leiareg(entrada):
     tam = entrada.read(2)
-    tamint = int.from_bytes(tam, byteorder='big')
+
+    if not tam or len(tam) < 2:
+        return ""
+
+    tamint = int.from_bytes(tam, "little")
 
     if tamint > 0:
         buffer = entrada.read(tamint)
-        bufferstr = buffer.decode('utf-8')
-        return bufferstr
-    
+        buffer = buffer.decode()
+        return buffer
     else:
         return ""
 
 
 buffer = leiareg(entrada)
+
 while buffer != "":
-    lista = list(buffer)
+    lista = buffer.split(sep='|')
+
     for campo in lista:
         print(campo)
-    buffer = leiareg()
+
+    buffer = leiareg(entrada)
+
 entrada.close()
